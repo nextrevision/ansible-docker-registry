@@ -1,0 +1,60 @@
+---
+# Tasks to install docker-registry
+- name: install dependencies
+  apt: name={{ item }} state=present update_cache=yes
+  with_items:
+    - build-essential
+    - libevent-dev
+    - libssl-dev
+    - liblzma-dev
+    - python-dev
+    - python-pip
+    - python-passlib
+    - redis-server
+    - nginx-extras
+
+- name: install docker registry
+  pip: name=docker-registry
+
+- name: create required directories
+  file: dest={{ item }} state=directory
+  with_items:
+    - "{{ storage_dir }}"
+    - /var/log/docker-registry
+    - /etc/docker-registry
+
+- name: set configuration file
+  template: >
+    src=config.yml.j2
+    dest=/etc/docker-registry/config.yml
+  notify: restart docker-registry
+
+- name: create symlink for config
+  file: >
+    src=/etc/docker-registry/config.yml
+    dest=/usr/local/lib/python2.7/dist-packages/config/config.yml
+    state=link
+
+- name: install nginx vhost
+  template: >
+    src=nginx.j2
+    dest=/etc/nginx/sites-enabled/docker-registry
+  notify: restart nginx
+
+- name: remove default nginx vhost
+  file: path=/etc/nginx/sites-enabled/default state=absent
+  notify: restart nginx
+
+- name: install docker-registry init file
+  template: >
+    src=docker-registry.init.j2
+    dest=/etc/init/docker-registry.conf
+
+- name: ensure docker-registry is running
+  service: name=docker-registry state=running enabled=yes
+
+- name: ensure nginx is running
+  service: name=nginx state=running enabled=yes
+
+- name: ensure redis-server is running
+  service: name=redis-server state=running enabled=yes

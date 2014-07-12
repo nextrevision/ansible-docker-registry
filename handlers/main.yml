@@ -1,0 +1,6 @@
+---
+- name: restart nginx
+  service: name=nginx state=restarted
+
+- name: restart docker-registry
+  service: name=docker-registry state=restarted

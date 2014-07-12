@@ -1,0 +1,5 @@
+---
+storage_type: file
+storage_dir: /mnt/registry
+domain: localhost
+log_level: info

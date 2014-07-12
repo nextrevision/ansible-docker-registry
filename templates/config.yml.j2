@@ -1,0 +1,19 @@
+common:
+  # Set a random string here
+  secret_key: REPLACEME
+  standalone: true
+  search_backend: sqlalchemy
+  sqlalchemy_index_database: sqlite:///{{ storage_dir }}/docker-registry.db
+
+prod:
+  storage: {{ storage_type }}
+  storage_path: {{ storage_dir }}
+  loglevel: {{ log_level }}
+  # Enabling LRU cache for small files. This speeds up read/write on
+  # small files when using a remote storage backend (like S3).
+  cache:
+    host: localhost
+    port: 6379
+  cache_lru:
+    host: localhost
+    port: 6379
