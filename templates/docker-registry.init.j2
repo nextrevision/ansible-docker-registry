@@ -8,8 +8,6 @@ stop on runlevel [016]
 respawn
 respawn limit 10 5
 
-# set environment variables
-
 script
   cd $REGISTRY_HOME
   exec gunicorn -k gevent --max-requests 100 -e SETTINGS_FLAVOR=prod \

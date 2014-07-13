@@ -1,0 +1,6 @@
+---
+- name: install redis-server
+  apt: name=redis-server state=present
+
+- name: ensure redis-server is running
+  service: name=redis-server state=running enabled=yes

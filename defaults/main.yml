@@ -1,5 +1,15 @@
 ---
-storage_type: file
-storage_dir: /mnt/registry
 domain: localhost
 log_level: info
+secret_key: cd8fbaa639122edad0617212ff0a6666
+storage_type: file
+storage_path: /mnt/registry
+manage_nginx: true
+manage_redis: true
+
+# S3 Variables
+# s3_region
+# s3_bucket
+# s3_storage_path
+# s3_access_key
+# s3_secret_key

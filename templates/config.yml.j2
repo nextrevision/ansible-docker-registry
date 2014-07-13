@@ -1,13 +1,21 @@
 common:
   # Set a random string here
-  secret_key: REPLACEME
+  secret_key: {{ secret_key }}
   standalone: true
   search_backend: sqlalchemy
-  sqlalchemy_index_database: sqlite:///{{ storage_dir }}/docker-registry.db
+  sqlalchemy_index_database: sqlite:///{{ storage_path }}/docker-registry.db
 
 prod:
   storage: {{ storage_type }}
-  storage_path: {{ storage_dir }}
+{% if storage_type == 's3' %}
+  s3_region: {{ s3_region }}
+  s3_bucket: {{ s3_bucket }}
+  storage_path: {{ s3_storage_path }}
+  s3_access_key: {{ s3_access_key }}
+  s3_secret_key: {{ s3_secret_key }}
+{% else %}
+  storage_path: {{ storage_path }}
+{% endif %}
   loglevel: {{ log_level }}
   # Enabling LRU cache for small files. This speeds up read/write on
   # small files when using a remote storage backend (like S3).
