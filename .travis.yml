@@ -16,4 +16,4 @@ install:
   - pip install ansible==1.5.0
 
 script:
-  - "rake travis"
+  - "TARGET_HOST='localhost' rake travis"

@@ -14,6 +14,11 @@ end
 desc "Run ansible against localhost"
 task :ansible do
   sh %{ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo}
+  sh %{ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo \
+       | grep -q 'changed=0.*failed=0' \
+       && (echo 'Idempotence test: pass' && exit 0) \
+       || (echo 'Idempotence test: fail' && exit 1)
+  }
 end
 
 desc "Spin up vagrant instance"
@@ -23,7 +28,11 @@ end
 
 desc "Run vagrant provision and check for changed/failed"
 task :vagrant_provision do
-  sh %{vagrant provision | grep -q 'changed=0.*failed=0' && (echo 'Idempotence test: pass' && exit 0) || (echo 'Idempotence test: fail' && exit 1)}
+  sh %{vagrant provision \ |
+       grep -q 'changed=0.*failed=0' \
+       && (echo 'Idempotence test: pass' && exit 0) \
+       || (echo 'Idempotence test: fail' && exit 1)
+  }
 end
 
 desc "Run travis tasks"
