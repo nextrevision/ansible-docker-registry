@@ -3,4 +3,4 @@
   user: vagrant
   sudo: True
   roles:
-    - docker-registry
+    - ansible-docker-registry

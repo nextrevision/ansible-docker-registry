@@ -2,18 +2,18 @@ require 'rake'
 require 'rspec/core/rake_task'
 
 desc "Run serverspec tests"
-RSpec::Core::RakeTask.new(:serverspec) do |t|
+RSpec::Core::RakeTask.new(:spec) do |t|
   t.pattern = 'spec/*/*_spec.rb'
 end
 
 desc "Test playbook syntax"
 task :syntax do
-  sh %{ansible-playbook -i inventory --syntax-check test.yml}
+  sh %{ansible-playbook -i tests/inventory --syntax-check tests/test.yml}
 end
 
 desc "Run ansible against localhost"
 task :ansible do
-  sh %{ansible-playbook -i inventory test.yml}
+  sh %{ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo}
 end
 
 desc "Spin up vagrant instance"
@@ -30,7 +30,7 @@ desc "Run travis tasks"
 task :travis => [
   :syntax,
   :ansible,
-  :serverspec
+  :spec
 ]
 
 desc "Vagrant test suite"
@@ -38,7 +38,7 @@ task :vagrant => [
   :syntax,
   :vagrant_up,
   :vagrant_provision,
-  :serverspec
+  :spec
 ]
 
 task :default => :syntax

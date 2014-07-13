@@ -13,7 +13,8 @@ RSpec.configure do |c|
     c.sudo_password = ENV['SUDO_PASSWORD']
   end
   c.before :all do
-    block = self.class.metadata[:block]
+    #block = self.class.metadata[:block]
+    block = self.class.metadata[:example_group_block]
     if RUBY_VERSION.start_with?('1.8')
       file = block.to_s.match(/.*@(.*):[0-9]+>/)[1]
     else
