@@ -1,4 +1,4 @@
-common:
+common: &common
   # Set a random string here
   secret_key: {{ secret_key }}
   standalone: true
@@ -6,10 +6,14 @@ common:
   sqlalchemy_index_database: sqlite:///{{ storage_path }}/docker-registry.db
 
 prod:
+  <<: *common
   storage: {{ storage_type }}
 {% if storage_type == 's3' %}
+{% if s3_region is defined %}
   s3_region: {{ s3_region }}
+{% endif %}
   s3_bucket: {{ s3_bucket }}
+  boto_bucket: {{ s3_bucket }}
   storage_path: {{ s3_storage_path }}
   s3_access_key: {{ s3_access_key }}
   s3_secret_key: {{ s3_secret_key }}
@@ -22,6 +26,8 @@ prod:
   cache:
     host: localhost
     port: 6379
+    db: 0
   cache_lru:
     host: localhost
     port: 6379
+    db: 0
