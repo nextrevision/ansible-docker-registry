@@ -19,8 +19,8 @@ Ansible role for installing docker registry
 
 ### S3 Storage
 
-* ```s3_region```
-* ```s3_bucket```
+* ```s3_region```: optional, will default to US Standard
+* ```s3_bucket```: also provides the value for boto_bucket
 * ```s3_storage_path```
 * ```s3_access_key```
 * ```s3_secret_key```
