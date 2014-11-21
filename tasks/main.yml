@@ -45,3 +45,15 @@
 
 - include: nginx.yml
   when: manage_nginx
+
+# Tests
+# =====
+
+# Required for uri module
+- name: install httplib2 for tests
+  pip: name=httplib2 state=present
+
+# Ping the Docker registry, API documented here :
+# https://docs.docker.com/reference/api/registry_api/
+- name: ping docker registry
+  uri: url=http://localhost:5000/v1/_ping method=GET follow_redirect=all return_content=yes status_code=200 timeout=3
