@@ -37,8 +37,8 @@
     src=docker-registry.init.j2
     dest=/etc/init/docker-registry.conf
 
-- name: enable docker-registry service
-  service: name=docker-registry enabled=yes
+- name: ensure docker registry is enabled and running
+  service: name=docker-registry state=running enabled=yes
 
 - include: redis.yml
   when: manage_redis
