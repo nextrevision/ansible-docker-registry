@@ -3,7 +3,10 @@ upstream docker-registry {
 }
 
 server {
-  listen 80;
+  listen 443;
+  ssl on;
+  ssl_certificate /etc/ssl/certs/docker-registry;
+  ssl_certificate_key /etc/ssl/private/docker-registry;
   {% if domain != 'localhost' %}
   server_name {{ domain }};
   {% endif %}
