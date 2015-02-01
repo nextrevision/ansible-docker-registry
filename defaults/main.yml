@@ -6,6 +6,14 @@ storage_type: file
 storage_path: /mnt/registry
 manage_nginx: true
 manage_redis: true
+dependencies: []
+
+# SSL Settings
+registry_port: 80
+registry_ssl: false
+registry_ssl_cert: /etc/ssl/certs/docker_registry.crt
+registry_ssl_key: /etc/ssl/private/docker_registry.key
+create_ssl_cert: true
 
 # S3 Variables
 # s3_region

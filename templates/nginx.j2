@@ -3,7 +3,7 @@ upstream docker-registry {
 }
 
 server {
-  listen 80;
+  listen {{ registry_port }};
   {% if domain != 'localhost' %}
   server_name {{ domain }};
   {% endif %}
@@ -16,12 +16,27 @@ server {
   client_max_body_size 0;
   # disable any limits to avoid HTTP 413 for large image uploads
   # required to avoid HTTP 411: see Issue #1486 (https://github.com/dotcloud/docker/issues/1486)
+
+  {% if registry_ssl -%}
+  ssl on;
+  {% if registry_ssl_cert -%}
+  ssl_certificate {{ registry_ssl_cert }};
+  {% endif %}
+  {% if registry_ssl_key -%}
+  ssl_certificate_key {{ registry_ssl_key }};
+  {% endif %}
+  {% endif %}
+
+  {% if nginx_version.stdout | version_compare('1.3.9', '<=') -%}
   chunkin on;
 
   error_page 411 = @my_411_error;
   location @my_411_error {
     chunkin_resume;
   }
+  {% else %}
+  chunked_transfer_encoding on;
+  {% endif %}
 
   location / {
     proxy_pass http://docker-registry;

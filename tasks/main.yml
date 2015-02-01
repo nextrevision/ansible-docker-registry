@@ -9,6 +9,7 @@
     - liblzma-dev
     - python-dev
     - python-pip
+    - swig
 
 - name: install docker registry
   pip: name=docker-registry

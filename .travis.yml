@@ -3,7 +3,11 @@ language: python
 python: "2.7"
 
 env:
-  - SITE=test.yml
+  - ANSIBLE_VERSION=1.4
+  - ANSIBLE_VERSION=1.5
+  - ANSIBLE_VERSION=1.6
+  - ANSIBLE_VERSION=1.7
+  - ANSIBLE_VERSION=1.8
 
 before_install:
   - sudo apt-get update -qq
@@ -12,8 +16,19 @@ before_install:
   - bundle install
 
 install:
-  # Install Ansible.
-  - pip install ansible==1.5.0
+  - pip install ansible==$ANSIBLE_VERSION
 
 script:
-  - "TARGET_HOST='localhost' rake travis"
+  - rake syntax
+  - ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo
+  - >
+    ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo
+    | tee -a ansible.out | grep -q 'changed=0.*failed=0'
+    && (echo 'Idempotence test: pass' && exit 0)
+    || (echo 'Idempotence test: fail' && cat ansible.out && exit 1)
+  - >
+    TARGET_HOST='localhost' ruby -S rspec
+    spec/common/docker-registry_spec.rb
+    spec/common/nginx_spec.rb
+    spec/common/redis-server_spec.rb
+    spec/default/registry_spec.rb

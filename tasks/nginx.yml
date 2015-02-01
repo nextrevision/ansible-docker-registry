@@ -2,6 +2,22 @@
 - name: install nginx server
   apt: name=nginx-extras state=present
 
+- name: verify ssl cert
+  stat: path={{ registry_ssl_cert }}
+  changed_when: false
+  register: ssl_cert
+
+- name: generate ssl cert
+  shell: >
+    openssl req -subj '/CN={{ domain }}/O=Docker Registry/C=US'
+    -new -newkey rsa:2048 -days 365 -nodes -x509 -keyout {{ registry_ssl_key }} -out {{ registry_ssl_cert }}
+  when: create_ssl_cert and not ssl_cert.stat.exists
+
+- name: get nginx version
+  shell: nginx -v 2>&1 | cut -d '/' -f2 | cut -d ' ' -f1
+  changed_when: false
+  register: nginx_version
+
 - name: install nginx vhost
   template: >
     src=nginx.j2

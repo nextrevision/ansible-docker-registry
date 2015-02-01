@@ -1,0 +1,5 @@
+---
+- hosts: all
+  user: vagrant
+  tasks:
+    - debug: msg="Set vagrant ansible inventory file"

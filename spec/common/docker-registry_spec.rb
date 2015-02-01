@@ -13,11 +13,3 @@ end
 describe port(5000) do
   it { should be_listening }
 end
-
-describe command('wget -O- -q http://localhost/') do
-    it { should return_stdout /docker-registry server \(prod\)/ }
-end
-
-describe command('wget -O- -q http://localhost/v1/_ping') do
-    it { should return_stdout 'true' }
-end

@@ -1,6 +1,6 @@
 ---
 - hosts: all
   user: vagrant
-  sudo: True
+  sudo: true
   roles:
     - ansible-docker-registry
