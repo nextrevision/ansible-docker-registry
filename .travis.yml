@@ -12,20 +12,15 @@ env:
 before_install:
   - sudo apt-get update -qq
   - sudo apt-get install rubygems
-  - sudo gem install bundler
-  - sudo bundle install
+  - gem install bundler
+  - bundle install
 
 install:
   - pip install ansible==$ANSIBLE_VERSION
 
 script:
   - rake syntax
-  - ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo -vvvv
-  - >
-    ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo -vvvv
-    | tee -a ansible.out | grep -q 'changed=0.*failed=0'
-    && (echo 'Idempotence test: pass' && exit 0)
-    || (echo 'Idempotence test: fail' && cat ansible.out && exit 1)
+  - ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo
   - >
     TARGET_HOST='localhost' ruby -S rspec
     spec/common/docker-registry_spec.rb
