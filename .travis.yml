@@ -20,7 +20,7 @@ install:
 
 script:
   - rake syntax
-  - ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo
+  - ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo -vvvv
   - >
     ansible-playbook -i tests/inventory tests/test.yml --connection=local --sudo -vvvv
     | tee -a ansible.out | grep -q 'changed=0.*failed=0'
