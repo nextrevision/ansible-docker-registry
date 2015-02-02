@@ -41,7 +41,7 @@ namespace "ansible" do
         desc "Run ansible against #{box['name']} with scenario #{scenario}"
         task scenario do
           extra_vars = config['scenarios'][scenario].map{|k,v| "#{k}=#{v}"}.join(' ')
-          ansible_key = `vagrant ssh-config trusty | grep IdentityFile | awk '{ print $2 }' | tr -d "\n"`
+          ansible_key = `vagrant ssh-config #{box['name']} | grep IdentityFile | awk '{ print $2 }' | tr -d "\n"`
           sh %{#{ansible_env} ansible-playbook --private-key=#{ansible_key} --user=vagrant --connection=ssh --limit='#{box['name']}' --inventory-file=#{ansible_inventory} --extra-vars='#{extra_vars}' tests/vagrant.yml}
         end
       end

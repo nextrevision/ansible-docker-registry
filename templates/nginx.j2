@@ -27,7 +27,7 @@ server {
   {% endif %}
   {% endif %}
 
-  {% if nginx_version.stdout | version_compare('1.3.9', '<=') -%}
+  {% if nginx_version_test.rc == 0 -%}
   chunkin on;
 
   error_page 411 = @my_411_error;
