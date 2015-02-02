@@ -46,16 +46,19 @@ For boot2docker, see https://github.com/boot2docker/boot2docker#insecure-registr
 
 ## Testing
 
+### Install Dependencies
     bundle install
 
-    # Precise w/ defaults
+### Precise w/ Defaults
     rake precise:default
-    # Precise w/ SSL self-signed cert
+
+### Precise w/ SSL Self-Signed Cert
     rake precise:ssl
 
-    # Trusty w/ default
+### Trusty w/ Defaults
     rake trusty:default
-    # Trusty w/ SSL self-signed cert
+
+### Trusty w/ SSL Self-Signed Cert
     rake trusty:ssl
 
 ## TODO

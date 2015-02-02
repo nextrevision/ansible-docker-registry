@@ -5,9 +5,9 @@ describe port(80) do
 end
 
 describe command('wget -O- -q http://localhost/') do
-    it { should return_stdout /true/ }
+    its(:stdout) { should match /true/ }
 end
 
 describe command('wget -O- -q http://localhost/v1/_ping') do
-    it { should return_stdout '{}' }
+    its(:stdout) { should match '{}' }
 end

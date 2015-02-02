@@ -12,10 +12,7 @@
     - swig
 
 - name: install docker registry
-  pip: name={{ item }}
-  with_items:
-    - setuptools
-    - docker-registry
+  pip: name=docker-registry
 
 - name: create required directories
   file: dest={{ item }} state=directory

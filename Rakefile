@@ -25,7 +25,7 @@ namespace "serverspec" do
       box['scenarios'].each do |scenario|
         desc "Run serverspec against #{box['name']} with scenario #{scenario}"
         RSpec::Core::RakeTask.new(scenario) do |t|
-          ENV['TARGET_BOX'] = box['name']
+          ENV['TARGET_HOST'] = box['name']
           t.pattern = 'spec/{common,' + scenario + '}/*_spec.rb'
         end
       end
